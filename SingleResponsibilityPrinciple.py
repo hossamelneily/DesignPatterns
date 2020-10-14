@@ -27,19 +27,24 @@ class Journal:
     # def low_from_web(self, uri):
     #     pass
 
+#the folloiwng class is like the model manager in django
 class PersistanceManager:
     @staticmethod
-    def save(self, filename):
+    #static method won't take self
+    def save(journal, filename):
+        print(journal)
+    @staticmethod
+    def load(filename):
         pass
 
-    def load(self, filename):
-        pass
-
-    def low_from_web(self, uri):
+    def low_from_web(uri):
         pass
 
 
 j = Journal()
 j.add_entrt('yes i can')
 j.add_entrt('no no ')
+
 print(j)
+filename = 'test.txt'
+PersistanceManager.save(j,filename)
