@@ -5,7 +5,6 @@
 
 from enum import Enum
 
-
 class Color(Enum):
     RED = 1
     GREEN = 2
@@ -24,7 +23,7 @@ class Product:
         self.color = color
         self.size = size
 
-
+#the ProductFilter calls will violates this concept
 class ProductFilter:
     def filter_by_color(self, products, color):
         for p in products:
@@ -46,10 +45,12 @@ class ProductFilter:
     # OCP = open for extension, closed for modification
     # estate space explosion
 
-
+#Specification is enterprise pattern
 class Specification:
     def is_satisfied(self, item):
         pass
+
+
 
     # and operator makes life easier
     def __and__(self, other):
@@ -91,6 +92,7 @@ class AndSpecification(Specification):
         self.args = args
 
     def is_satisfied(self, item):
+        # print(self.args)
         return all(map(
             lambda spec: spec.is_satisfied(item), self.args))
 
@@ -118,18 +120,20 @@ for p in pf.filter_by_color(products, Color.GREEN):
 # v AFTER
 bf = BetterFilter()
 
-print('Green products (new):')
-green = ColorSpecification(Color.GREEN)
-for p in bf.filter(products, green):
-    print(f' - {p.name} is green')
-
-print('Large products:')
-large = SizeSpecification(Size.LARGE)
+large = SizeSpecification(size=Size.LARGE)
 for p in bf.filter(products, large):
     print(f' - {p.name} is large')
 
-print('Large blue items:')
-# large_blue = AndSpecification(large, ColorSpecification(Color.BLUE))
-large_blue = large & ColorSpecification(Color.BLUE)
-for p in bf.filter(products, large_blue):
-    print(f' - {p.name} is large and blue')
+green = ColorSpecification(Color.GREEN)
+
+green_large = AndSpecification(green,large)
+for p in bf.filter(products, green_large):
+    print(f' - {p.name} is large and green')
+
+
+
+
+                    #Enum
+                #Specification (is_satisfied) generic
+                #Filter   (filter) generic
+                #Better Filter
